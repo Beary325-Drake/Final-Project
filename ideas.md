@@ -20,3 +20,7 @@ Other classes we may need:
 I think that for the progression, we could split the CYOA into 3 zones, each one being its own location that you trudge through. I'm pulling this idea from "An Average Campaign" on roblox, which utilizes a very similar system to
 progress the players by splitting their own CYOA into zones.
 Perhaps zone 1 would be like a forest, then the player could go to a river or mountain, and finally the volcano to fight the final boss which could be a dragon or evil villain or something.
+
+New Ideas:
+Keep it singleplayer, so we don't need to implement multiple characters.
+Instead of Multiple players, we could add another class for "Companions" who can maybe extend enemy?
