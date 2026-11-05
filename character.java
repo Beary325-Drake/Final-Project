@@ -1,4 +1,4 @@
-public abstract class character 
+public abstract class Character 
 {
     private int health;
     private int mana;
