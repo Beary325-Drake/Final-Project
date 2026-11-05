@@ -4,6 +4,8 @@ public abstract class character
     private int mana;
     private int armor;
     private int damage;
+    private boolean isAlive;
+    private boolean isDefending;
 
     public int getHealth()
     {
@@ -44,4 +46,25 @@ public abstract class character
     {
         this.damage = damage;
     }
+
+    public boolean isAlive()
+    {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive)
+    {
+        isAlive = alive;
+    }
+
+    public boolean isDefending()
+    {
+        return isDefending;
+    }
+
+    public void setDefending(boolean defending)
+    {
+        isDefending = defending;
+    }
+
 }
