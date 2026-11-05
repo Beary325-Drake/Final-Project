@@ -1,4 +1,12 @@
 public abstract class character 
+/*
+Baseline Superclass for all characters in the game.
+It should contain basic attributes like:
+Health (Which should be an integer that cannot go below 0, and if it reaches 0, the character is dead)
+Mana (Should be an integer beteween 0 and 6, and each player should gain 1 per turn unless stated otherwise.)
+Armor (Should be an integer that cannot go below 0, TBD)
+Damage (Should be an integer that cannot go below 0. It should be used to inflict damage on other characters, or possibly objects.)
+ */
 {
     private int health;
     private int mana;
