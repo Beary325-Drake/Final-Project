@@ -1,4 +1,4 @@
-/*
+/**
 Baseline Superclass for all characters in the game.
 It should contain basic attributes like:
 Health (Which should be an integer that cannot go below 0, and if it reaches 0, the character is dead)
@@ -8,21 +8,75 @@ Damage (Should be an integer that cannot go below 0. It should be used to inflic
 */
 public abstract class Character 
 {
+    /**
+     * the current health of the character, dies if goes below 0
+     */
     private int health;
+    /**
+     * health cannot go above this number
+     */
+    private int maxHealth;
+    /**
+     * the current mana of the character
+     */
     private int mana;
+    /**
+     * mana cannot go above this number
+     */
+    private int maxMana;
+    /**
+     * reduces damage
+     */
     private int armor;
+    /**
+     * the base damage this character deals 
+     */
     private int damage;
     private boolean isAlive;
     private boolean isDefending;
+
+
+    /**
+     * used to kill the character, overide with whatever logic is needed for the creature 
+     */
+    public void die()
+    {
+        this.setAlive(false);
+    }
+
+    /**
+     * used for calculating damage, override to include things like resistances, armor, critital damage, etc
+     */
+    public int attack()
+    {
+        return this.getDamage();
+    }
 
     public int getHealth()
     {
         return health;
     }
 
+    /**
+     * kills the chracter if health goes to 0 or below
+     */
     public void setHealth(int health)
     {
-        this.health = health;
+        this.health = Math.clamp(health, 0, maxHealth);
+        if (this.health <= 0)
+        {
+            this.die();
+        }
+    }
+
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth)
+    {
+        this.maxHealth = maxHealth;
     }
 
     public int getMana()
@@ -32,8 +86,19 @@ public abstract class Character
 
     public void setMana(int mana)
     {
-        this.mana = mana;
+        this.mana = Math.clamp(mana, 0, maxMana);
     }
+
+    public int getMaxMana()
+    {
+        return maxMana;
+    }
+
+    public void setMaxMana(int mana)
+    {
+        this.maxMana = mana;
+    }
+
 
     public int getArmor()
     {
@@ -42,7 +107,7 @@ public abstract class Character
 
     public void setArmor(int armor)
     {
-        this.armor = armor;
+        this.armor = Math.max(armor, 0);
     }
 
     public int getDamage()
@@ -60,6 +125,9 @@ public abstract class Character
         return isAlive;
     }
 
+    /**
+     * probably shouldnt be called other than through die(), might remove this function 
+     */
     public void setAlive(boolean alive)
     {
         isAlive = alive;
