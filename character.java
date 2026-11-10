@@ -142,6 +142,8 @@ public abstract class Character
     {
         isDefending = defending;
     }
+
+    // Turn related functions & Actions:
     
     public void turn_start()
     /*
