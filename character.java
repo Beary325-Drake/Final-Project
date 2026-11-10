@@ -146,10 +146,10 @@ public abstract class Character
     // Turn related functions & Actions:
     
     public void turn_start()
-    /*
-    This function serves to check the character's status at the start of their turn.
-    For now, it will add 1 mana to the character, given that the addition does not make this character exceed their max mana.
-    it will also check if the character is defending, and if so, it will remove defending status.
+    /**
+    * This function serves to check the character's status at the start of their turn.
+    * For now, it will add 1 mana to the character, given that the addition does not make this character exceed their max mana.
+    * it will also check if the character is defending, and if so, it will remove defending status.
     */
 
     {

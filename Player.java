@@ -14,13 +14,13 @@ public class Player extends Character
     /**
      * Default constructor for the Player class
      */
-    public Player()
+    public Player(int hp, int atk, int mana, int armor)
     {
         this.setHealth(100);
         this.setMaxHealth(100);
         this.setDamage(10);
-        this.setMana(100);
-        this.setMaxMana(100);
+        this.setMana(0); // mana is gained in fight, and should always start at 0
+        this.setMaxMana(6); 
         this.setArmor(0);
         this.setAlive(true);
         this.setDefending(false);
