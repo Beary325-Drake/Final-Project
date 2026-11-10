@@ -24,3 +24,8 @@ Perhaps zone 1 would be like a forest, then the player could go to a river or mo
 New Ideas:
 Keep it singleplayer, so we don't need to implement multiple characters.
 Instead of Multiple players, we could add another class for "Companions" who can maybe extend enemy?
+
+Every character should have a special ability that costs mana:
+- Players will get it through the skill tree (AoE, High single target, status effects?)
+- Enemies will have it by default (Probably just bonus damage, as a punishment for not killing the enemy in a certain amount of turns.)
+- Companions will be dependant on what companion//ally the player has.

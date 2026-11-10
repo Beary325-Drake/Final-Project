@@ -142,5 +142,21 @@ public abstract class Character
     {
         isDefending = defending;
     }
+    
+    public void turn_start()
+    /*
+    This function serves to check the character's status at the start of their turn.
+    For now, it will add 1 mana to the character, given that the addition does not make this character exceed their max mana.
+    it will also check if the character is defending, and if so, it will remove defending status.
+    */
 
+    {
+        if (this.isDefending()) { // Simple check to see if the character is defending. If so, removes defending status.
+            this.setDefending(false);
+        }
+        if (this.getMana()+1 < this.getMaxMana()) {// Ex: if 5+1 <= 6, then add 1 mana to the character
+            this.setMana(this.getMana() + 1);
+        }
+
+    }
 }
