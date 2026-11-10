@@ -161,3 +161,15 @@ TODO:
     - Right now its super bare bones. Each character gains 1 mana per turn, up to their max mana, and on their turn can spend it how they like. I'd like to implement a cooldown for two reasons: 1. it mixes up how the player can do things, and prevents them from spamming the same thing over and over again. 2. It makes boss fights and creature encounters scripted, so people who have played more have more "Game Knowledge" as a reward for their investment. (Also it prevents monsters from spamming abilities too.)
 - Reorganize current classes
     - If taking a break from coding or planning, rearranging the code within the classes so that similar things are grouped can significantly boost the code's readability. (This problem may not always exist.)
+
+
+
+# FOR THURSDAY
+- Make a barebones demo
+    - Character & skill tree
+    - Location
+    - Monster
+    - Main
+    - Logic
+    1. Finish Creature.java so we can implement creatures
+    2. Create Main.java so we can present a functioning & running game
