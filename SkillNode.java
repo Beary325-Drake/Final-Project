@@ -79,6 +79,16 @@ public class SkillNode
     {
         return unlocked;
     }
+
+    public Skill getSkill()
+    {
+        return this.skill;
+    }
+
+    public void setSkill(Skill skill)
+    {
+        this.skill = skill;
+    }
     
     public boolean contains(SkillNode child)
     {
@@ -96,6 +106,29 @@ public class SkillNode
         }
         return false;
     }
+
+    public boolean containsSkill(Skill skill)
+    {
+        for (SkillNode child : children)
+        {
+            if (child.getSkill() == this.skill)
+            {
+                return true;
+            }
+        }
+        
+        for (SkillNode childNode : children)
+        {
+            if (childNode.containsSkill(skill))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 
     /**
      * determines if this skill is connected to an already learned skill, or is the root skill 

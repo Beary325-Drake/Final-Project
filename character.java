@@ -35,6 +35,8 @@ public abstract class Character
     private boolean isAlive;
     private boolean isDefending;
 
+    private SkillTree skills;
+
 
     /**
      * used to kill the character, overide with whatever logic is needed for the creature 
@@ -50,6 +52,14 @@ public abstract class Character
     public int attack()
     {
         return this.getDamage();
+    }
+
+    public void useSkill(Skill skill)
+    {
+        if (skills.hasSkill(skill))
+        {
+            skill.useSkill(this);
+        }
     }
 
     public int getHealth()

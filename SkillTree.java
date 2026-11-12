@@ -16,6 +16,11 @@ public class SkillTree
         return root.contains(node);
     }
 
+    public boolean hasSkill(Skill skill)
+    {
+        return root.containsSkill(skill);
+    }
+
     public SkillNode getRoot()
     {
         return root;

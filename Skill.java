@@ -17,7 +17,10 @@ public class Skill
      * the number of turns that the skill gets put on cooldown for when used
      */
     private int maxCooldown;
-
+    /**
+     * for spells that last for a time, this is how many turns they last
+     */
+    private int duration;
     /**
      * add more types later on, and keep track of what they do here
      * example of assigning a skill with an enum:
@@ -36,15 +39,26 @@ public class Skill
     private SkillType type;
 
 
-    public Skill(String name, SkillType type, int cost, int power, int cooldown, int maxCooldown)
+    public Skill(String name, SkillType type, int cost, int power, int maxCooldown, int duration)
     {
         this.setName(name);
         this.setSkillType(SkillType.ATTACK);
         this.setCost(cost);
         this.setPower(power);
-        this.setCooldown(cooldown);
         this.setMaxCooldown(maxCooldown);
-        this.unlocked = false;
+        this.setCooldown(0);
+        this.setDuration(duration);
+        this.setUnlocked(false);
+    }
+
+    public void setDuration(int duration)
+    {
+        this.duration = duration;
+    }
+
+    public int getDuration()
+    {
+        return this.duration;
     }
 
     public void setUnlocked(boolean unlocked)
@@ -148,9 +162,12 @@ public class Skill
             case SkillType.STRENGTH:
             {
                 user.setDamage(user.getDamage() + power);
-                System.out.println("You feel empowered with " + power + " extra damage!");
+                System.out.println("You feel empowered with " + power + " extra damage for " + duration + " turns!");
             }
         }
+        cooldown = maxCooldown;
+        user.setMana(user.getMana() - cost);
     }
 
+    
 }
