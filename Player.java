@@ -16,11 +16,11 @@ public class Player extends Character
      */
     public Player(int hp, int atk, int mana, int armor)
     {
-        this.setHealth(100);
         this.setMaxHealth(100);
+        this.setHealth(100);
         this.setDamage(10);
+        this.setMaxMana(6);
         this.setMana(0); // mana is gained in fight, and should always start at 0
-        this.setMaxMana(6); 
         this.setArmor(0);
         this.setAlive(true);
         this.setDefending(false);
@@ -32,11 +32,11 @@ public class Player extends Character
      */
     public Player(int health, int damage, int mana, int armor, String name)
     {
-        this.setHealth(health);
         this.setMaxHealth(health);
+        this.setHealth(health);
         this.setDamage(damage);
-        this.setMana(mana);
         this.setMaxMana(mana);
+        this.setMana(mana);
         this.setArmor(armor);
         this.setAlive(true);
         this.setDefending(false);

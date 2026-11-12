@@ -167,9 +167,9 @@ TODO:
 # FOR THURSDAY
 - Make a barebones demo
     - Character & skill tree
-    - Location
-    - Monster
-    - Main
+    - Location Framework (Not needed)
+    - Monster (Tim: in progress)
+    - Main (Tim: in progress)
     - Logic
     1. Finish Creature.java so we can implement creatures
     2. Create Main.java so we can present a functioning & running game
