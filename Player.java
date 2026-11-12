@@ -56,8 +56,11 @@ public class Player extends Character
     @Override
     public void die()
     {
+        if (isAlive())
+        {
+            System.out.println("You died");
+        }
         this.setAlive(false);
-        System.out.println("You died");
     }
 
      

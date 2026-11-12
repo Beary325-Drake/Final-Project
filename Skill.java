@@ -145,24 +145,28 @@ public class Skill
                 */
                 Random rand = new Random();
                 System.out.println("You attack enemy #" + rand.nextInt(200) + " for " + power + " damage!");
+                break;
             }
 
             case SkillType.HEAL:
             {
                 user.setHealth(user.getHealth() + power);
                 System.out.println("You heal for " + power + " health!");
+                break;
             }
 
             case SkillType.MAXHEALTH:
             {
                 user.setMaxHealth(user.getMaxHealth() + power);
                 System.out.println("You gain " + power + " more maximum health!");
+                break;
             }
 
             case SkillType.STRENGTH:
             {
                 user.setDamage(user.getDamage() + power);
                 System.out.println("You feel empowered with " + power + " extra damage for " + duration + " turns!");
+                break;
             }
         }
         cooldown = maxCooldown;
