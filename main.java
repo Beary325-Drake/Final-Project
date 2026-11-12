@@ -38,6 +38,9 @@ public class main {
         input.close();
     }
     
+    /**
+     * starts up the game with a new player, currently puts you straight into combat
+     */
     private static void play () {
         System.out.println("What is the name of your hero: ");
         String characterName = input.next().trim();
@@ -46,6 +49,9 @@ public class main {
         combat();
     }
 
+    /**
+     * initiates combat with some number of enemies
+     */
     private static void combat()
     {
         createEnemies(8);
@@ -55,6 +61,10 @@ public class main {
         }
     }
 
+    /**
+     * a single turn in combat
+     * starts with player turn, then the enemy turns
+     */
     private static void combatTurn()
     {
 
@@ -100,6 +110,11 @@ public class main {
         }
     }
 
+    /**
+     * a single turn for the player
+     * will gives choice of skill usage later
+     * takes the current targeted enemy as input
+     */
     private static void playerTurn(Creature enemy)
     {
         int damage = Math.max(0, player.getDamage() - enemy.getArmor()); // I want to change this to a range when we implement equipment
@@ -114,6 +129,9 @@ public class main {
         }
     }
 
+    /**
+     * a turn for every single enemy in the current enemy list
+     */
     private static void enemyTurn()
     {
         for (Creature enemy : enemyList)
@@ -124,6 +142,9 @@ public class main {
         }
     }
 
+    /**
+     * adds to the list of enemies
+     */
     private static void createEnemies(int count)
     {
         for (int i = 0; i < count; i++)
@@ -137,6 +158,9 @@ public class main {
         }
     }
 
+    /**
+     * prints out the stats of all combatants in the current combat
+     */
     private static void printCombatants()
     {
         System.out.println(player.getName() + " HP: " + player.getHealth());
@@ -146,6 +170,9 @@ public class main {
         }
     }
 
+    /**
+     * prints out options for combat or fleeing
+     */
     private static void printOptions()
     {
         System.out.println("-= Select an action. =-");
