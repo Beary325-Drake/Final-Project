@@ -27,7 +27,7 @@ public class Creature extends Character {
     }
     
     // Resets creature IDs at the start of each round
-    // TODO: (Later Implementation) Make it so that companion IDs do not reset alongside monsters & bosses.
+    // TODO: (Later Implementation) Make companions function differently between combats, should be different from monsters and bosses.
     // (Maybe they get their own system for it?)
     public static void resetIds() {
         nextCreatureID = 1;

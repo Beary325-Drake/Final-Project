@@ -172,4 +172,4 @@ TODO:
     - Main (Tim: in progress)
     - Logic
     1. Finish Creature.java so we can implement creatures
-    2. Create Main.java so we can present a functioning & running game
+    2. Add onto main.java to implement the skill tree. 

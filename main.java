@@ -56,7 +56,8 @@ public class main {
             String choice = input.nextLine().trim();
             if (choice.equals("2")) {
                 System.out.println("You attempt to flee...");
-                System.out.println(" and succeed!!");
+                System.out.println(" and succeed!!"); 
+                // TODO: Add on chance for escape to fail (80-20) & remove escape chance for bosses. (0-100)
                 return;
             }
 
@@ -65,14 +66,14 @@ public class main {
                 continue;
             }
             // Turn Order: Player damages enemy, on fatal blow, combat breaks.
-            int damage = Math.max(0, player.getDamage() - enemy.getArmor()); 
+            int damage = Math.max(0, player.getDamage() - enemy.getArmor()); // I want to change this to a range when we implement equipment
             enemy.setHealth(enemy.getHealth() - damage);
             if (!enemy.isAlive()) {
                 System.out.println("The " + enemy.getName() + " is slain!");
                 break;
             }
             // Turn Order: Enemy damages player. On fatal blow the player dies, and combat breaks.
-            damage = Math.max(0, enemy.getDamage() - player.getArmor());
+            damage = Math.max(0, enemy.getDamage() - player.getArmor()); // I want to change this to a range when we implement equipment
             player.setHealth(player.getHealth() - damage);
             System.out.print("The " + enemy.getName() + "swings at you, dealing " + damage + " damage.");
             if (!player.isAlive()) {
