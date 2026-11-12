@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Skill 
 {
     private String name;
@@ -23,11 +25,12 @@ public class Skill
      * 
      * ATTACK: deals damage to a chosen target
      * HEAL: heals self
+     * MAXHEALTH: increases max health
      * STRENGTH: provides a temp damage buff
      */
     public enum SkillType
     {
-        ATTACK, HEAL, STRENGTH
+        ATTACK, HEAL, MAXHEALTH, STRENGTH
     }
 
     private SkillType type;
@@ -117,13 +120,36 @@ public class Skill
     /**
      * uses a switch case and the type to do stuff
      */
-    public void useSkill()
+    public void useSkill(Character user)
     {
-
         switch (type)
         {
+            case SkillType.ATTACK:
+            {
+                /*
+                TODO: needs enemy id's for this bit, currently picking random number for choice, maybe replace with player choice
+                */
+                Random rand = new Random();
+                System.out.println("You attack enemy #" + rand.nextInt(200) + " for " + power + " damage!");
+            }
 
+            case SkillType.HEAL:
+            {
+                user.setHealth(user.getHealth() + power);
+                System.out.println("You heal for " + power + " health!");
+            }
 
+            case SkillType.MAXHEALTH:
+            {
+                user.setMaxHealth(user.getMaxHealth() + power);
+                System.out.println("You gain " + power + " more maximum health!");
+            }
+
+            case SkillType.STRENGTH:
+            {
+                user.setDamage(user.getDamage() + power);
+                System.out.println("You feel empowered with " + power + " extra damage!");
+            }
         }
     }
 
