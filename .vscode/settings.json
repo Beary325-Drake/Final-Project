@@ -1,5 +1,15 @@
 {
+    // Editing Settings:
     "editor.acceptSuggestionOnCommitCharacter": false,
     "editor.inlineSuggest.enabled": false,
-    "editor.acceptSuggestionOnEnter": "off"
+    "editor.acceptSuggestionOnEnter": "off",
+
+    // Database Settings:
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
 }

@@ -181,6 +181,23 @@ public abstract class Character
     {
         this.name = name;
     }
+    
+    // Implements a basic attack skill for all characters, which is unlocked by default.
+    protected void addBasicAttack() {
+    Skill attack = new Skill(
+        "Basic Attack",
+        Skill.SkillType.ATTACK,
+        0,
+        getDamage(),
+        0,
+        0
+    );
+
+    SkillNode root = new SkillNode(attack);
+    root.setUnlocked(true);
+    setSkillTree(new SkillTree(root));
+    getUnlockedSkills().add(attack);
+}
 
     // Turn related functions & Actions:
     

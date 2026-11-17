@@ -24,6 +24,7 @@ public class Creature extends Character {
         this.setArmor(armor);
         this.setAlive(true);
         this.setDefending(false);
+        addBasicAttack();
     }
     
     // Resets creature IDs at the start of each round

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class main {
+public class Game {
     
     /* Menu section: Kinda barebones to start, but is what starts when you run main.java
        Will eventually have more things to do, like change the difficulty, or maybe
@@ -11,7 +11,7 @@ public class main {
     private static Player player;
     private static Scanner input = new Scanner(System.in);
 
-    public main(String[] args) 
+    public void run() 
     {
         boolean running = true;
         while (running) 
@@ -36,7 +36,6 @@ public class main {
         }
         input.close();
     }
-    
     /**
      * starts up the game with a new player, currently puts you straight into combat
      */
@@ -44,7 +43,7 @@ public class main {
         System.out.println("What is the name of your hero: ");
         String characterName = input.next().trim();
         player = new Player(100, 10, 0, 1, characterName);
-        
+        player.addBasicAttack();
         combat();
     }
 
