@@ -1,4 +1,3 @@
-import java.util.Random;
 
 public class Skill 
 {
@@ -134,35 +133,36 @@ public class Skill
     /**
      * uses a switch case and the type to do stuff
      */
-    public void useSkill(Character user)
+    public void useSkill(Character user, Character target)
     {
         switch (type)
         {
             case SkillType.ATTACK:
             {
-                /*
-                TODO: needs enemy id's for this bit, currently picking random number for choice, maybe replace with player choice
-                */
-                Random rand = new Random();
-                System.out.println("You attack enemy #" + rand.nextInt(200) + " for " + power + " damage!");
+                target.setHealth(target.getHealth() - power);
+                System.out.println(user.getName() + " attacks the " + target.getName() + ", dealing " + power + " damage!");
+                break;
             }
 
             case SkillType.HEAL:
             {
                 user.setHealth(user.getHealth() + power);
-                System.out.println("You heal for " + power + " health!");
+                System.out.println(user.getName() + " heals for " + power + " health!");
+                break;
             }
 
             case SkillType.MAXHEALTH:
             {
                 user.setMaxHealth(user.getMaxHealth() + power);
-                System.out.println("You gain " + power + " more maximum health!");
+                System.out.println(user.getName() + " gains " + power + " more maximum health!");
+                break;
             }
 
             case SkillType.STRENGTH:
             {
                 user.setDamage(user.getDamage() + power);
-                System.out.println("You feel empowered with " + power + " extra damage for " + duration + " turns!");
+                System.out.println(user.getName() + " is empowered with " + power + " extra damage for " + duration + " turns!");
+                break;
             }
         }
         cooldown = maxCooldown;

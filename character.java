@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 /**
 Baseline Superclass for all characters in the game.
 It should contain basic attributes like:
@@ -34,9 +35,12 @@ public abstract class Character
     private int damage;
     private boolean isAlive;
     private boolean isDefending;
-
-    private SkillTree skills;
-
+    private String name;
+    private SkillTree skillTree;
+    /**
+     * a list of all unlocked skills, so i dont have to make the tree an iterable object, could probably just use this for enemies, rather than dealing with trees
+     */
+    private ArrayList<Skill> unlockedSkills = new ArrayList<Skill>();
 
     /**
      * used to kill the character, overide with whatever logic is needed for the creature 
@@ -54,11 +58,11 @@ public abstract class Character
         return this.getDamage();
     }
 
-    public void useSkill(Skill skill)
+    public void useSkill(Skill skill, Character target)
     {
-        if (skills.hasSkill(skill))
+        if (skillTree.hasSkill(skill))
         {
-            skill.useSkill(this);
+            skill.useSkill(this, target);
         }
     }
 
@@ -151,6 +155,31 @@ public abstract class Character
     public void setDefending(boolean defending)
     {
         isDefending = defending;
+    }
+
+    public SkillTree getSkillTree()
+    {
+        return skillTree;
+    }
+
+    public void setSkillTree(SkillTree tree)
+    {
+        this.skillTree = tree;
+    }
+
+    public  ArrayList<Skill> getUnlockedSkills()
+    {
+        return unlockedSkills;
+    }
+
+    public String getName() 
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     // Turn related functions & Actions:

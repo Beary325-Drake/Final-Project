@@ -4,11 +4,8 @@ public class Player extends Character
      * TODO: replace with a location class once they are implemented
      */
     private int currentLocation;
-    
-    /**
-     * TODO: replace with a skill tree class once they are implemented
-     */
-    private int skillTree;
+
+    private int skillPoints;
 
     private String name;
     /**
@@ -25,6 +22,7 @@ public class Player extends Character
         this.setAlive(true);
         this.setDefending(false);
         this.setName("Bob");
+        this.setSkillPoints(0);
     }
 
     /**
@@ -41,6 +39,17 @@ public class Player extends Character
         this.setAlive(true);
         this.setDefending(false);
         this.setName(name);
+        this.setSkillPoints(0);
+    }
+
+    public void setSkillPoints(int points)
+    {
+        this.skillPoints = points;
+    }
+
+    public int getSkillPoints()
+    {
+        return this.skillPoints;
     }
 
     public void setName(String name)
@@ -56,8 +65,38 @@ public class Player extends Character
     @Override
     public void die()
     {
+        if (isAlive())
+        {
+            System.out.println("You died");
+        }
         this.setAlive(false);
-        System.out.println("You died");
+    }
+
+    public void unlockSkill(Skill skill)
+    {
+        if (!getSkillTree().hasSkill(skill))
+        {
+            SkillNode node = getSkillTree().findNode(skill);
+            if (node.canLearn())
+            {
+                if (!node.getUnlocked())
+                {
+                    skillPoints -= 1;
+                    node.setUnlocked(true);
+                    getUnlockedSkills().add(skill);
+                }
+            }
+        }
+    }
+
+    public void printSkillOptions()
+    {
+        int count = 1;
+        for (Skill skill : getUnlockedSkills())
+        {
+            count += 1;
+            System.out.println(count + ".   " + skill.getName());;
+        }
     }
 
      
