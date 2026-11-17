@@ -1,4 +1,4 @@
-
+package src;
 public class Skill 
 {
     private String name;
@@ -30,7 +30,7 @@ public class Skill
      * MAXHEALTH: increases max health
      * STRENGTH: provides a temp damage buff
      */
-    public enum SkillType
+    public static enum SkillType
     {
         ATTACK, HEAL, MAXHEALTH, STRENGTH
     }

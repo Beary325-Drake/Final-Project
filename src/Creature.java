@@ -1,8 +1,6 @@
+package src;
 import java.util.Random;
 public class Creature extends Character {
-/**
- * TODO: Implement an ID system so that many creatures can exist at once, while also being organized
- */
     private static int nextCreatureID = 1;
     private final int id;
 
@@ -53,9 +51,7 @@ public class Creature extends Character {
 
 
 }
-// TODO: Implement an overridden die function which states the creature that died, & maybe it's ID?
 
-// TODO: Implement creature logic
 
 // Note: Try to fit all the stuff for enemies and companions in here.
 //       Make a subclass for bosses so that they can use special skills.

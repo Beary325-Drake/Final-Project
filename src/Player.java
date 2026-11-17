@@ -1,12 +1,9 @@
+package src;
 public class Player extends Character
 {
-    /**
-     * TODO: replace with a location class once they are implemented
-     */
-    private int currentLocation;
 
+    private Location currentLocation;
     private int skillPoints;
-
     private String name;
     /**
      * Default constructor for the Player class
@@ -40,6 +37,16 @@ public class Player extends Character
         this.setDefending(false);
         this.setName(name);
         this.setSkillPoints(0);
+    }
+
+    public void setCurrentLocation(Location location)
+    {
+        this.currentLocation = location;
+    }
+
+    public Location getCurrentLocation()
+    {
+        return this.currentLocation;
     }
 
     public void setSkillPoints(int points)
@@ -81,21 +88,38 @@ public class Player extends Character
             {
                 if (!node.getUnlocked())
                 {
-                    skillPoints -= 1;
-                    node.setUnlocked(true);
-                    getUnlockedSkills().add(skill);
+                    if (skillPoints >= 1)
+                    {
+                        skillPoints -= 1;
+                        node.setUnlocked(true);
+                        getUnlockedSkills().add(skill);
+                        System.out.println("You have unlocked " + skill.getName() + ", and now have " + skillPoints + " skill points");
+                    }
+                    else
+                    {
+                        System.out.println("Too few skill points");
+                    }
                 }
+                else
+                {
+                    System.out.println("Skill is already unlocked");
+                }
+            }
+            else
+            {
+                System.out.println("cannot learn that skill yet");
             }
         }
     }
 
     public void printSkillOptions()
     {
+        System.out.println("Select one of the following skills: ");
         int count = 1;
         for (Skill skill : getUnlockedSkills())
         {
-            count += 1;
             System.out.println(count + ".   " + skill.getName());;
+            count += 1;
         }
     }
 

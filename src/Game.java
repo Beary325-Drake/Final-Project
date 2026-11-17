@@ -1,3 +1,4 @@
+package src;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -52,7 +53,8 @@ public class Game {
      */
     private static void combat()
     {
-        createEnemies(8);
+        System.out.println("Combat has begun!");
+        createEnemies(2);
         while (player.isAlive() && enemyList.size() > 0)
         {
             combatTurn();
@@ -77,9 +79,6 @@ public class Game {
             // Turn Order: Player damages enemy, on fatal blow, combat breaks.
             case "1":
             {
-                /*
-                TODO: replace with a choice so you can choose what enemy to hit
-                */
                 Creature enemy = enemyList.get(0);
                 
                 playerTurn(enemy);
@@ -96,7 +95,6 @@ public class Game {
             {
                 System.out.println("You attempt to flee...");
                 System.out.println(" and succeed!!"); 
-                // TODO: Add on chance for escape to fail (80-20) & remove escape chance for bosses. (0-100)
                 return;
             }
             default:
@@ -115,7 +113,6 @@ public class Game {
      */
     private static void playerTurn(Creature enemy)
     {
-        int damage = Math.max(0, player.getDamage() - enemy.getArmor()); // I want to change this to a range when we implement equipment
         Skill chosenSkill;
         
         while (true)
@@ -123,9 +120,9 @@ public class Game {
             player.printSkillOptions();
             int choice = input.nextInt();
             input.nextLine();
-            if (0 <= choice && choice < player.getUnlockedSkills().size())
+            if (0 < choice && choice <= player.getUnlockedSkills().size())
             {
-                chosenSkill = player.getUnlockedSkills().get(choice);
+                chosenSkill = player.getUnlockedSkills().get(choice - 1);
                 break;
             }
             else
@@ -137,7 +134,8 @@ public class Game {
         player.useSkill(chosenSkill, enemy);
 
         if (!enemy.isAlive()) {
-            System.out.println("The " + enemy.getName() + " is slain!");
+            System.out.println("The " + enemy.getName() + " is slain! You have gained 1 skill point");
+            player.setSkillPoints(player.getSkillPoints() + 1);
             enemyList.remove(enemy);
         }
     }
