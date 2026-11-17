@@ -1,4 +1,3 @@
-package src;
 import java.util.ArrayList;
 /**
  * a base node that will be used for the skill tree

@@ -1,4 +1,3 @@
-package src;
 import java.util.Random;
 public class Creature extends Character {
     private static int nextCreatureID = 1;

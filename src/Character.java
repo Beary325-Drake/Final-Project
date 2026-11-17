@@ -1,4 +1,3 @@
-package src;
 import java.util.ArrayList;
 /**
 Baseline Superclass for all characters in the game.

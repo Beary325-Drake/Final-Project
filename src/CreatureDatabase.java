@@ -1,13 +1,11 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CreatureDatabase {
-
     public static void main(String[] args) {
         String url = "jdbc:sqlite:CreatureDatabase.db";
 
