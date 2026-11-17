@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class main {
@@ -12,7 +11,7 @@ public class main {
     private static Player player;
     private static Scanner input = new Scanner(System.in);
 
-    public static void main(String[] args) 
+    public main(String[] args) 
     {
         boolean running = true;
         while (running) 
@@ -118,11 +117,26 @@ public class main {
     private static void playerTurn(Creature enemy)
     {
         int damage = Math.max(0, player.getDamage() - enemy.getArmor()); // I want to change this to a range when we implement equipment
-        /*
-         TODO: add a choice for what skill to use
-         */
-        System.out.println("You swing!");
-        enemy.setHealth(enemy.getHealth() - damage);
+        Skill chosenSkill;
+        
+        while (true)
+        {
+            player.printSkillOptions();
+            int choice = input.nextInt();
+            input.nextLine();
+            if (0 <= choice && choice < player.getUnlockedSkills().size())
+            {
+                chosenSkill = player.getUnlockedSkills().get(choice);
+                break;
+            }
+            else
+            {
+                System.out.println("Choice out of bounds, choose again");
+            }
+        }
+
+        player.useSkill(chosenSkill, enemy);
+
         if (!enemy.isAlive()) {
             System.out.println("The " + enemy.getName() + " is slain!");
             enemyList.remove(enemy);
@@ -136,9 +150,7 @@ public class main {
     {
         for (Creature enemy : enemyList)
         {
-            int damage = Math.max(0, enemy.getDamage() - player.getArmor()); // I want to change this to a range when we implement equipment
-            player.setHealth(player.getHealth() - damage);
-            System.out.println("The " + enemy.getName() + " swings at you, dealing " + damage + " damage.");
+            enemy.useSkill(player);
         }
     }
 
@@ -176,7 +188,7 @@ public class main {
     private static void printOptions()
     {
         System.out.println("-= Select an action. =-");
-        System.out.println("1. Attack");
+        System.out.println("1. Continue combat");
         System.out.println("2. Flee");
     }
 }

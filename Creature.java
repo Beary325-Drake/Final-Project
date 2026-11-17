@@ -1,10 +1,10 @@
+import java.util.Random;
 public class Creature extends Character {
 /**
  * TODO: Implement an ID system so that many creatures can exist at once, while also being organized
  */
     private static int nextCreatureID = 1;
     private final int id;
-    private final String name;
 
     public Creature(String name, int hp, int atk, int armor)
     {
@@ -13,7 +13,7 @@ public class Creature extends Character {
         // All other constructors are variables, so that each creature can have different stats.
         // identifiers
         this.id = nextCreatureID++; // creates a numerical identifier for the creature
-        this.name = name; // Should be the "type" of creature instead of a unique name. Goblin, Dog, Boss
+        this.setName(name); // Should be the "type" of creature instead of a unique name. Goblin, Dog, Boss
         // stat block
         this.setMaxHealth(hp);
         this.setHealth(hp);
@@ -29,17 +29,28 @@ public class Creature extends Character {
     // Resets creature IDs at the start of each round
     // TODO: (Later Implementation) Make companions function differently between combats, should be different from monsters and bosses.
     // (Maybe they get their own system for it?)
-    public static void resetIds() {
+    public static void resetIds() 
+    {
         nextCreatureID = 1;
     }
 
-    public int getId() {
+    public int getId() 
+    {
         return id;
     }
-    public String getName() { // Name exists to pull the type of monster. Ex: Goblin would be a name.
-        return name;
+    
+    /**
+     * currently chooses a random skill to use, perhaps add logic so enemies act smart
+     */
+    public void useSkill(Character target)
+    {
+        Random rand = new Random();
+        int choice = rand.nextInt(getUnlockedSkills().size());
+        Skill chosenSkill = getUnlockedSkills().get(choice);
+        useSkill(chosenSkill, target);
     }
-        
+
+
 }
 // TODO: Implement an overridden die function which states the creature that died, & maybe it's ID?
 
