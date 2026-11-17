@@ -149,27 +149,36 @@ This section follows the same ruling as the previous one. If its too much we can
 - 
 TODO:
 # URGENT
-- Implement main function
-    - Should have a sort of menu, maybe we could have character slots?
-    - Menu should have a welcome statement, explain the premise of the game, and then initialize one if the user requests.
+- Continue Implementing main function
+    - add more options to the menu
+    - welcome statement, explains menu
     - Options: Start, Difficulty, Tutorial, Saves (implement later), Credits, Dictionary
         - Dictionary should just have an overview of game content. Skills, Game mechanics, etc.
-(main should serve as the launching point of the game, so it will likely end up as an in-progress until the project is done)
+    - Combat:
+        - Turn counter (for DURATION)
+        - Multiple enemies
+        - Change it to a database for more flexibility, and less code in main.
 - Complete Creature class
-    - We'll probably need to discuss how we want some of the stuff to function prior to continuing work on it, as we'll need to discuss how we want to implement unique creatures. (Forest could have goblins, and other areas have their own unique creatures with a special stat block)
+    - creature logic and implementing multiple creatures in a combat at once.
 - Design Magic & Mana System
     - Right now its super bare bones. Each character gains 1 mana per turn, up to their max mana, and on their turn can spend it how they like. I'd like to implement a cooldown for two reasons: 1. it mixes up how the player can do things, and prevents them from spamming the same thing over and over again. 2. It makes boss fights and creature encounters scripted, so people who have played more have more "Game Knowledge" as a reward for their investment. (Also it prevents monsters from spamming abilities too.)
+    - Every character gains one mana per turn, up to a maximum of 6. Energy is used in skills that the characters can learn and use in combat, but it also has a cooldown. We could add it so you get a skill point for each combat you clear, and create skill nodes that increase stats instead of giving a new ability
 - Reorganize current classes
     - If taking a break from coding or planning, rearranging the code within the classes so that similar things are grouped can significantly boost the code's readability. (This problem may not always exist.)
 
 
 
-# FOR THURSDAY
-- Make a barebones demo
-    - Character & skill tree
+# FOR Tuesday
+- Add onto the demo
+    - implement skill tree
+    - add creature logic (takes different actions based on stats and energy)
     - Location Framework (Not needed)
-    - Monster (Tim: in progress)
-    - Main (Tim: in progress)
-    - Logic
-    1. Finish Creature.java so we can implement creatures
-    2. Add onto main.java to implement the skill tree. 
+    - IMPORTANT: try and organize a database for all information.
+- Develop skill tree
+    - I'd like for the skill tree to have some minor progression to the character as well, so on top of special abilities they also get to increase
+    their regular stats. Some skills require you to have progressed down the tree a couple of nodes. Maybe buffs and damage spells can branch from heals.
+    - One big thing I want to add to the skill tree are passive improvements. Some "skills" would be passive buffs that add permanent improvements to your character, like +6 attack. This allows for us to get some cool scaling later down the road, so the story feels like its getting harder without making the combat feel like you're fighting an invincible opponent.
+- Create a database to store information so we don't need to hard-bake code into main.java
+
+
+  
