@@ -13,6 +13,7 @@ public class Game {
 
     public void run() 
     {
+        // Game functions:
         boolean running = true;
         while (running) 
         {
