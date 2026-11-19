@@ -27,13 +27,13 @@ public class Player extends Character
     /**
      * Constructor for the Player class, with parameters for each attribute
      */
-    public Player(int health, int damage, int mana, int armor, String name)
+    public Player(int health, int damage, int maxMana, int armor, String name)
     {
         this.setMaxHealth(health);
         this.setHealth(health);
         this.setDamage(damage);
-        this.setMaxMana(mana);
-        this.setMana(mana);
+        this.setMaxMana(maxMana);
+        this.setMana(maxMana);
         this.setArmor(armor);
         this.setAlive(true);
         this.setDefending(false);
@@ -131,56 +131,55 @@ public class Player extends Character
     /**
      * prints out all skills that can be unlocked, takes and input, and unlocks skill based on input
      */
-    public void levelUp()
+    public void levelUp(Scanner keyboard)
     {
-        Scanner keyboard = new Scanner(System.in);
         level += 1;
         System.out.println(getName() + " has reached level " + level + "!");
         ArrayList<SkillNode> canUnlock = new ArrayList<SkillNode>();
+
+        for (Skill skill : getUnlockedSkills())
+        {
+            if (getSkillTree().hasSkill(skill))
+            {
+                SkillNode node = getSkillTree().findNode(skill);
+                if (node.getUnlocked())
+                {
+                    for (SkillNode childnode : node.getChildren())
+                    {
+                        if (!childnode.getUnlocked())
+                        {
+                            canUnlock.add(childnode);
+                        }
+                    }
+                }
+            }
+        }
+
         if (canUnlock.size() > 0)
         {
             while (true)
             {
                 System.out.println("Select one of the following skills to unlock:");
 
-                for (Skill skill : getUnlockedSkills())
-                {
-                    if (getSkillTree().hasSkill(skill))
-                    {
-                        SkillNode node = getSkillTree().findNode(skill);
-                        if (node.getUnlocked())
-                        {
-                            for (SkillNode childnode : node.getChildren())
-                            {
-                                if (!childnode.getUnlocked())
-                                {
-                                    canUnlock.add(childnode);
-                                }
-                            }
-                        }
-                    }
-                }
 
                 int counter = 1;
                 for (SkillNode node : canUnlock)
                 {
                     System.out.println(counter + ".  " + node.getSkill().getName());
+                    counter += 1;
                 }
-
 
                 int choice = keyboard.nextInt();
                 keyboard.nextLine();
+
                 if (choice > 0 && choice <= canUnlock.size())
                 {
-                    Skill chosenSkill = canUnlock.get(choice -1).getSkill();
+                    Skill chosenSkill = canUnlock.get(choice - 1).getSkill();
                     unlockSkill(chosenSkill);
-                    if (canUnlock.contains(canUnlock.get(choice -1)))
-                    {
-                        System.out.println(chosenSkill.getName() + " is now unlocked!");
-                        break;
-                    }
+                    System.out.println(chosenSkill.getName() + " is now unlocked!");
+                    break;
                 }
-
+                System.out.println("Input out of bounds");
             }
         }
 
@@ -188,8 +187,5 @@ public class Player extends Character
         {
             System.out.println("No skills left to unlock!");
         }
-        
-        keyboard.close();
-
-        }
+    }
 }

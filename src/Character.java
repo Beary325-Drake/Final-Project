@@ -60,9 +60,13 @@ public abstract class Character
 
     public void useSkill(Skill skill, Character target)
     {
-        if (skillTree.hasSkill(skill))
+        if (skillTree.hasSkill(skill) && getMana() >= skill.getCost())
         {
             skill.useSkill(this, target);
+        }
+        else
+        {
+            System.out.println("Not enough mana!");
         }
     }
 
@@ -203,6 +207,7 @@ public abstract class Character
     
     public void turn_start()
     /**
+     * TODO: add some form of counter so temporary strength buffs wear off after a few turns, as well as keep track of cooldowns
     * This function serves to check the character's status at the start of their turn.
     * For now, it will add 1 mana to the character, given that the addition does not make this character exceed their max mana.
     * it will also check if the character is defending, and if so, it will remove defending status.

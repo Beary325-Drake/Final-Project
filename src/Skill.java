@@ -40,7 +40,7 @@ public class Skill
     public Skill(String name, SkillType type, int cost, int power, int maxCooldown, int duration)
     {
         this.setName(name);
-        this.setSkillType(SkillType.ATTACK);
+        this.setSkillType(type);
         this.setCost(cost);
         this.setPower(power);
         this.setMaxCooldown(maxCooldown);

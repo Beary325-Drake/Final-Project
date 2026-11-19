@@ -34,7 +34,6 @@ public class Game {
                     System.out.println("Please enter a valid integer. Ex: '1', or '2'");
             }
         }
-        input.close();
     }
     /**
      * starts up the game with a new player, currently puts you straight into combat
@@ -42,9 +41,55 @@ public class Game {
     private static void play () {
         System.out.println("What is the name of your hero: ");
         String characterName = input.next().trim();
-        player = new Player(100, 10, 0, 1, characterName);
-        player.addBasicAttack();
-        combat();
+        player = new Player(100, 10, 5, 1, characterName);
+        player.setSkillTree(createPlayerSkillTree());
+        // the root skill starts unlocked, so add it to the list the player picks from in combat
+        player.getUnlockedSkills().add(player.getSkillTree().getRoot().getSkill());
+        for (int i = 0; i < 4; i++)
+        {
+            combat();
+        }
+        input.close();
+    }
+
+    /**
+     * created with the help of Claude so i can test skills before the database is finished
+     * TODO: replace with a getting the information from the database
+     * 
+     * builds the player's skill tree, must be called after the player is created
+     * Basic Attack is the root and starts unlocked, every other skill has to be unlocked with skill points
+     *
+     * Basic Attack
+     * ├── Heavy Strike
+     * │   └── Whirlwind
+     * ├── Heal
+     * │   └── Fortify
+     * └── Battle Cry
+     */
+    private static SkillTree createPlayerSkillTree()
+    {
+        // Skill(name, type, cost, power, maxCooldown, duration)
+        Skill basicAttack = new Skill("Basic Attack", Skill.SkillType.ATTACK,    0, player.getDamage(), 0, 0);
+        Skill heavyStrike = new Skill("Heavy Strike", Skill.SkillType.ATTACK,    2, 20, 2, 0);
+        Skill whirlwind   = new Skill("Whirlwind",    Skill.SkillType.ATTACK,    4, 35, 3, 0);
+        Skill heal        = new Skill("Heal",         Skill.SkillType.HEAL,      2, 20, 2, 0);
+        Skill fortify     = new Skill("Fortify",      Skill.SkillType.MAXHEALTH, 3, 15, 4, 0);
+        Skill battleCry   = new Skill("Battle Cry",   Skill.SkillType.STRENGTH,  2, 5,  3, 2);
+
+        SkillNode root = new SkillNode(basicAttack);
+        root.setUnlocked(true);
+
+        SkillNode heavyStrikeNode = new SkillNode(heavyStrike);
+        SkillNode healNode = new SkillNode(heal);
+        SkillNode battleCryNode = new SkillNode(battleCry);
+        root.addChild(heavyStrikeNode);
+        root.addChild(healNode);
+        root.addChild(battleCryNode);
+
+        heavyStrikeNode.addChild(new SkillNode(whirlwind));
+        healNode.addChild(new SkillNode(fortify));
+
+        return new SkillTree(root);
     }
 
     /**
@@ -53,11 +98,18 @@ public class Game {
     private static void combat()
     {
         System.out.println("Combat has begun!");
-        createEnemies(2);
+        createEnemies(1);
         while (player.isAlive() && enemyList.size() > 0)
         {
             combatTurn();
         }
+        System.out.println("Combat is finished!");
+        if (player.isAlive())
+        {
+            System.out.println("You gain 1 skill point!");
+            player.setSkillPoints(player.getSkillPoints() + 1);
+            player.levelUp(input);
+        }           
     }
 
     /**
@@ -133,8 +185,7 @@ public class Game {
         player.useSkill(chosenSkill, enemy);
 
         if (!enemy.isAlive()) {
-            System.out.println("The " + enemy.getName() + " is slain! You have gained 1 skill point");
-            player.setSkillPoints(player.getSkillPoints() + 1);
+            System.out.println("The " + enemy.getName() + " is slain!");
             enemyList.remove(enemy);
         }
     }
@@ -171,10 +222,10 @@ public class Game {
      */
     private static void printCombatants()
     {
-        System.out.println(player.getName() + " HP: " + player.getHealth());
+        System.out.println(player.getName() + " HP: " + player.getHealth() + "  MANA: " + player.getMana());
         for (Creature enemy : enemyList)
         {
-            System.out.println(enemy.getName() + " HP: " + enemy.getHealth());
+            System.out.println(enemy.getName() + "  HP: " + enemy.getHealth());
         }
     }
 
