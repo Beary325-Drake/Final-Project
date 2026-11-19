@@ -180,5 +180,7 @@ TODO:
     - One big thing I want to add to the skill tree are passive improvements. Some "skills" would be passive buffs that add permanent improvements to your character, like +6 attack. This allows for us to get some cool scaling later down the road, so the story feels like its getting harder without making the combat feel like you're fighting an invincible opponent.
 - Create a database to store information so we don't need to hard-bake code into main.java
 
+- Switch Playerapi into a GameAPI which'll cover all current data.
+
 
   

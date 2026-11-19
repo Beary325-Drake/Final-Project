@@ -44,7 +44,15 @@ public class Game {
     private static void play () {
         System.out.println("What is the name of your hero: ");
         String characterName = input.next().trim();
-        player = new Player(100, 10, 5, 1, characterName);
+        Object[] playerStats = PlayerApi.getPlayerById(1);
+        player = new Player(
+                (int) playerStats[0],
+                (int) playerStats[1],
+                (int) playerStats[2],
+                (int) playerStats[3],
+                (String) playerStats[4]
+            );
+        //player = new Player(100, 10, 5, 1, characterName);
         player.setCurrentLocation(createLocations());
         player.setSkillTree(createPlayerSkillTree());
         // the root skill starts unlocked, so add it to the list the player picks from in combat

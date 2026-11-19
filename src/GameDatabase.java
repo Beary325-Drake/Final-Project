@@ -59,51 +59,7 @@ public class GameDatabase {
                     ")";
                 statement.executeUpdate(sql_location_connections);
             
-
-            // Table 3: Creature_Templates table
-            // Includes the foreign key for locations, so that specific creatures are attributed to their home locations.
-            // In the case we add chances for certain enemies to spawn in, add a table input for % chance to appear
-            // Bosses will have 100 + X as their ID (Where X is the location ID they belong to.)
-            statement.executeUpdate("DROP TABLE IF EXISTS creaturetemplate"); 
-            String sql_creaturetemplates = "CREATE TABLE creaturetemplate (" +
-                    "id INTEGER PRIMARY KEY, " +
-                    "name TEXT NOT NULL, " +
-                    "max_health INTEGER NOT NULL, " +
-                    "damage INTEGER NOT NULL, " +       
-                    "armor INTEGER NOT NULL, " + 
-                    "location_id INTEGER NOT NULL, " +
-                    "FOREIGN KEY (location_id) REFERENCES location(id)" +
-                    ")";
-                statement.executeUpdate(sql_creaturetemplates);
-            
-            
-
-            /* Table 4: Enemy table */
-            statement.executeUpdate("DROP TABLE IF EXISTS creature");
-            String sql_creatures = "CREATE TABLE creature (" +
-                    "id INTEGER PRIMARY KEY, " +
-                    "name TEXT NOT NULL, " +
-                    "max_health INTEGER NOT NULL, " +
-                    "current_health INTEGER NOT NULL, " +
-                    "damage INTEGER NOT NULL, " +       
-                    "armor INTEGER NOT NULL " +
-                    ")";
-                    statement.executeUpdate(sql_creatures);
-            
-            /* Table 5: Player Table */
-            statement.executeUpdate("DROP TABLE IF EXISTS player");
-            String sql_player = "CREATE TABLE player (" +
-                    "id INTEGER PRIMARY KEY, " +
-                    "name TEXT NOT NULL, " +
-                    "max_health INTEGER NOT NULL, " +
-                    "current_health INTEGER NOT NULL, " +
-                    "damage INTEGER NOT NULL, " +       
-                    "armor INTEGER NOT NULL " +
-                    ")";
-                    statement.executeUpdate(sql_player);
-
-
-            /* Table 6: Skill Table
+            /* Table 3: Skill Table
              * power is the effect it has on a creature's healthbar. (Value for how much HP damaged, or HP healed)
              * cost is how much mana it takes to use
              * cooldown is how many turns before the player/creature can cast this again (0 means its ready for casting)
@@ -124,6 +80,50 @@ public class GameDatabase {
                     "effect INTEGER NOT NULL " +
                     ")";
                 statement.executeUpdate(sql_skills);
+
+            // Table 4: Creature_Templates table
+            // Includes the foreign key for locations, so that specific creatures are attributed to their home locations.
+            // In the case we add chances for certain enemies to spawn in, add a table input for % chance to appear
+            // Bosses will have 100 + X as their ID (Where X is the location ID they belong to.)
+            statement.executeUpdate("DROP TABLE IF EXISTS creaturetemplate"); 
+            String sql_creaturetemplates = "CREATE TABLE creaturetemplate (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "max_health INTEGER NOT NULL, " +
+                    "damage INTEGER NOT NULL, " +       
+                    "armor INTEGER NOT NULL, " + 
+                    "location_id INTEGER NOT NULL, " +
+                    "FOREIGN KEY (location_id) REFERENCES location(id)" +
+                    ")";
+                statement.executeUpdate(sql_creaturetemplates);
+            
+            
+
+            /* Table 5: Enemy table */
+            statement.executeUpdate("DROP TABLE IF EXISTS creature");
+            String sql_creatures = "CREATE TABLE creature (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "max_health INTEGER NOT NULL, " +
+                    "current_health INTEGER NOT NULL, " +
+                    "damage INTEGER NOT NULL, " +       
+                    "armor INTEGER NOT NULL " +
+                    ")";
+                    statement.executeUpdate(sql_creatures);
+            
+            /* Table 6: Player Table */
+            statement.executeUpdate("DROP TABLE IF EXISTS player");
+            String sql_player = "CREATE TABLE player (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "max_health INTEGER NOT NULL, " +
+                    "current_health INTEGER NOT NULL, " +
+                    "damage INTEGER NOT NULL, " +       
+                    "armor INTEGER NOT NULL " +
+                    ")";
+                    statement.executeUpdate(sql_player);
+
+            statement.executeUpdate("insert into player values(1, 'Player', 100, 100, 10, 1)");
             
             // LOCATIONS:
 
@@ -165,62 +165,101 @@ public class GameDatabase {
             
             // ------------------------------
             
+            // SKILLS:
+
+            statement.executeUpdate("insert into skill values(1, 'attack', '10', '0', '0', '0', '0', '0')"); // Universal to all creatures & players
+            
+            // ------------------------------
             // CREATURE TEMPLATES:
 
             // PLACEHOLDER statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
 
             // Forest monsters (Forest tag: "1")
-            statement.executeUpdate("insert into creature values(1, 'Goblin', '30', '5', '0', '1')"); // High % chance
+            statement.executeUpdate("insert into creature values(1, 'Goblin', '30', '5', '0', '1')");   // High % chance
             statement.executeUpdate("insert into creature values(2, 'Faeling', '25', '10', '0', '1')"); // High % chance (heal skill?)
-            statement.executeUpdate("insert into creature values(3, 'Wolf', '30', '8', '0', '1')"); // High % chance
-            statement.executeUpdate("insert into creature values(4, 'Bandit', '25', '10', '1', '1')"); // Med % chance
-            statement.executeUpdate("insert into creature values(5, 'Ent', '35', '5', '1', '1')"); // Med % chance
-            statement.executeUpdate("insert into creature values(6, 'Squirrel', '5', '2', '0', '1')"); // Med % chance
-            statement.executeUpdate("insert into creature values(7, 'Evil Druid', '50', '10', '1', '1')"); // Low % chance (Debuff skill?)
+            statement.executeUpdate("insert into creature values(3, 'Wolf', '30', '8', '0', '1')");     // High % chance
+            statement.executeUpdate("insert into creature values(4, 'Bandit', '25', '10', '1', '1')");  // Med % chance
+            statement.executeUpdate("insert into creature values(5, 'Ent', '35', '5', '1', '1')");      // Med % chance
+            statement.executeUpdate("insert into creature values(6, 'Squirrel', '5', '2', '0', '1')");  // Med % chance
+            statement.executeUpdate("insert into creature values(7, 'Evil Druid', '50', '10', '1', '1')");      // Low % chance (Debuff skill?)
             statement.executeUpdate("insert into creature values(8, 'Rampaging Bear', '50', '15', '-3', '1')"); // Low % chance
-            statement.executeUpdate("insert into creature values(9, 'Big Rock', '25', '0', '5', '1')"); // Low % chance (Damage skill?)
+            statement.executeUpdate("insert into creature values(9, 'Big Rock', '25', '0', '5', '1')");         // Low % chance (Damage skill?)
             statement.executeUpdate("insert into creature values(10, 'The Great Oak', '100', '1', '3', '1')"); // VERY Low % chance (maybe skill?)
             
             statement.executeUpdate("insert into creature values(101, 'Eledraiel, The Forest Warlord', '100', '25', '2', '1')"); // BOSS (Spawns on last combat)
 
             // Desert monsters (Desert tag: "2")
-            /*
-            statement.executeUpdate("insert into creature values(11, 'Desert Bandit', '<maxhp>', '<atk>', '<armor>', '<location>')"); // High % chance
-            statement.executeUpdate("insert into creature values(12, 'Sand Elemental', '<maxhp>', '<atk>', '<armor>', '<location>')"); // High % chance
-            statement.executeUpdate("insert into creature values(13, 'Mummy', '<maxhp>', '<atk>', '<armor>', '<location>')"); // High % chance
-            statement.executeUpdate("insert into creature values(14, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Med % chance
-            statement.executeUpdate("insert into creature values(15, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Med % chance
-            statement.executeUpdate("insert into creature values(16, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Med % chance
-            statement.executeUpdate("insert into creature values(17, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Low % chance
-            statement.executeUpdate("insert into creature values(18, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Low % chance
-            statement.executeUpdate("insert into creature values(19, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Low % chance
-            statement.executeUpdate("insert into creature values(20, 'Rock Golem', '<maxhp>', '<atk>', '<armor>', '<location>')"); // VERY Low % chance
+            
+            statement.executeUpdate("insert into creature values(11, 'Desert Bandit', '40', '20', '5', '2')");  // High % chance
+            statement.executeUpdate("insert into creature values(12, 'Sand Elemental', '30', '25', '3', '2')"); // High % chance
+            statement.executeUpdate("insert into creature values(13, 'Snake', '20', '5', '', '2')");            // High % chance (Poison Skill)
+            statement.executeUpdate("insert into creature values(14, 'Baby Sandworm', '40', '5', '10', '2')");   // Med % chance
+            statement.executeUpdate("insert into creature values(15, 'Desert Brawler', '100', '30', '0', '2')"); // Med % chance
+            statement.executeUpdate("insert into creature values(16, 'Mummy', '50', '10', '4', '2')");           // Med % chance
+            statement.executeUpdate("insert into creature values(17, 'Sphinx', '65', '10', '10', '2')");         // Low % chance
+            statement.executeUpdate("insert into creature values(18, 'Wealthy Merchant', '75', '0', '8', '2')"); // Low % chance (Summon Enemy Skill)
+            statement.executeUpdate("insert into creature values(19, 'Rock Golem', '75', '20', '10', '2')");     // Low % chance
+            statement.executeUpdate("insert into creature values(20, 'Anubis', '400', '10', '5', '2')"); // VERY Low % chance (DoT Skill//Weakness Skill)
 
-            statement.executeUpdate("insert into creature values(102, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // BOSS (spawns on last combat)
-            */
+            statement.executeUpdate("insert into creature values(102, 'Erebus, Mother of all Sandworms', '250', '90', '10', '2')"); // BOSS (spawns on last combat) (Attacks Once every 2 Turns)
+            
             // Snowfield monsters (Snowfield tag: "3")
-            /*
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            /* (TODO: IMPLEMENT STAT BLOCKS)
+            statement.executeUpdate("insert into creature values(21, 'Angry Snowman', '20', '5', '0', '3')");        // High % Chance (Stun skill every other turn)
+            statement.executeUpdate("insert into creature values(22), 'Redcap Goblin', '<40>', '<25>', '<0>', '3')"); // High % Chance
+            statement.executeUpdate("insert into creature values(23, 'Fae', '50', '15', '0', '3')");                 // High % Chance (Half all incoming damage Skill (3 Duration))
+            statement.executeUpdate("insert into creature values(24, '<Creature>', '<maxhp>', '<atk>', '<armor>', '3')"); // Med % Chance
+            statement.executeUpdate("insert into creature values(25, '<Creature>', '<maxhp>', '<atk>', '<armor>', '3')"); // Med % Chance
+            statement.executeUpdate("insert into creature values(26, '<Creature>', '<maxhp>', '<atk>', '<armor>', '3')"); // Med % Chance
+            statement.executeUpdate("insert into creature values(27, '<Creature>', '<maxhp>', '<atk>', '<armor>', '3')"); // Low % Chance
+            statement.executeUpdate("insert into creature values(28, '<Creature>', '<maxhp>', '<atk>', '<armor>', '3')"); // Low % Chance
+            statement.executeUpdate("insert into creature values(29, '<Creature>', '<maxhp>', '<atk>', '<armor>', '3')"); // Low % Chance
+            statement.executeUpdate("insert into creature values(30, '', '<maxhp>', '<atk>', '<armor>', '3')"); // Very Low % chance
 
-            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(103, 'The Winter Shogun', '150', '20', '5', '3')"); // BOSS 
             */
             // Cavern monsters (Cave tag: "4")
+            /* (TODO: IMPLEMENT STAT BLOCKS)
+            statement.executeUpdate("insert into creature values(31, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // High % Chance
+            statement.executeUpdate("insert into creature values(32, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // High % Chance
+            statement.executeUpdate("insert into creature values(33, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // High % Chance
+            statement.executeUpdate("insert into creature values(34, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // Med % Chance
+            statement.executeUpdate("insert into creature values(35, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // Med % Chance
+            statement.executeUpdate("insert into creature values(36, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // Med % Chance
+            statement.executeUpdate("insert into creature values(37, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // Low % Chance
+            statement.executeUpdate("insert into creature values(38, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // Low % Chance
+            statement.executeUpdate("insert into creature values(39, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // Low % Chance
+            statement.executeUpdate("insert into creature values(40, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')"); // VERY Low % Chance
+
+            statement.executeUpdate("insert into creature values(104, '<creature>', '<maxhp>', '<atk>', '<armor>', '4')");
+
+            */
+            // The Burning City's Monsters (City tag: "5")
+
+            // The Forgotten Mountain Bosses (Mountain tag: "6")
+            /*  (TODO: IMPLEMENT STAT BLOCKS)
+            statement.executeUpdate("insert into creature values(51, 'Denial', '<maxhp>', '<atk>', '<armor>', '6')"); // First Combat
+            statement.executeUpdate("insert into creature values(52, 'Anger', '<maxhp>', '<atk>', '<armor>', '6')"); // Second Combat
+            statement.executeUpdate("insert into creature values(53, 'Fault', '<maxhp>', '<atk>', '<armor>', '6')"); // Third Combat
+            statement.executeUpdate("insert into creature values(54, 'Guilt', '<maxhp>', '<atk>', '<armor>', '6')"); // Fourth Combat
+            statement.executeUpdate("insert into creature values(55, 'Death', '<maxhp>', '<atk>', '<armor>', '6')"); // Fifth Combat // (Skill: Hits player with 50% of their attack value. (Mana Req: 6), (Cooldown: 12))
+
+            statement.executeUpdate("insert into creature values(106, 'Unspeakable Horror', '<maxhp>', '<atk>', '<armor>', '6')"); // FINAL BOSS
+            */
+            // The Forlorn Citadel Bosses (Citadel tag: "7")
+            /*  (TODO: IMPLEMENT STAT BLOCKS)
+            statement.executeUpdate("insert into creature values(56, '<creature>', '<maxhp>', '<atk>', '<armor>', '7')"); // First Combat
+            statement.executeUpdate("insert into creature values(57, '<creature>', '<maxhp>', '<atk>', '<armor>', '7')"); // Second Combat
+            statement.executeUpdate("insert into creature values(58, '<creature>', '<maxhp>', '<atk>', '<armor>', '7')"); // 
+            statement.executeUpdate("insert into creature values(59, '<creature>', '<maxhp>', '<atk>', '<armor>', '7')");
+            statement.executeUpdate("insert into creature values(60, '<creature>', '<maxhp>', '<atk>', '<armor>', '7')");
+
+            statement.executeUpdate("insert into creature values(107, '<creature>', '<maxhp>', '<atk>', '<armor>', '7')"); // FINAL BOSS
             
+            */
             // ------------------------------
 
 
-
-            // SKILLS:
-            statement.executeUpdate("insert into skill values(1, 'attack', '10', '0', '0', '0', '0', '0')");
             
             //display the contents of the Location table
             String sqlLocationQuery = "SELECT * FROM location"; // Return all (*) rows from Location table
