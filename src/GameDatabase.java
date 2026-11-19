@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,7 +25,7 @@ public class GameDatabase {
         try (Connection connection = DriverManager.getConnection(url);
              Statement statement = connection.createStatement()) {
             
-            // Table 1: Location Database
+            // Table 1: Location Table
             statement.executeUpdate("DROP TABLE IF EXISTS location"); 
             String sql_locations = "CREATE TABLE location (" +
                     "id INTEGER PRIMARY KEY, " +
@@ -35,24 +34,6 @@ public class GameDatabase {
                     "encounters INTEGER NOT NULL " +
                 ")";
             statement.executeUpdate(sql_locations);
-
-            // Forest Location
-            statement.executeUpdate("insert into location values(1, 'Forest', 'A dark, wooded forest filled with goblins. . .', '8')");
-            // Desert Location
-            statement.executeUpdate("insert into location values(2, 'Desert', 'Harsh dunes that batter your body with strong winds. . . You can taste the dust. . .', '10')");
-            // Snow Location
-            statement.executeUpdate("insert into location values(3, 'Snowfields', 'A white abyss of nothing but ice and snow. . . It's chilly. . .', '10')");
-            // Caves Location
-            statement.executeUpdate("insert into location values(4, 'Caves', 'Crystalline structures glitter in the walls. . . They're very pretty.', '12')");
-            // City Location
-            statement.executeUpdate("insert into location values(5, 'Burning City', 'Homes crumble to the ground as fire erupts from windows and doors. . . What happened here?', '12')");
-            // Mountain Location
-            statement.executeUpdate("insert into location values(6, 'The Forgotten Mountain', 'A dark presence can be felt here, as if something is off. . .', '6')");
-            // Forlorn Citadel
-            statement.executeUpdate("insert into location values(7, 'The Forlorn Citadel', 'Ashes are spread throughout the air as the capital stands charred. . . and broken. . .', '6')");
-
-
-
             
             /* Table 2: Location Connections/Transitions
             This table dictates what locations are connected to where:
@@ -77,6 +58,94 @@ public class GameDatabase {
                     "FOREIGN KEY (to_location_id) REFERENCES location(id) " +
                     ")";
                 statement.executeUpdate(sql_location_connections);
+            
+
+            // Table 3: Creature_Templates table
+            // Includes the foreign key for locations, so that specific creatures are attributed to their home locations.
+            // In the case we add chances for certain enemies to spawn in, add a table input for % chance to appear
+            // Bosses will have 100 + X as their ID (Where X is the location ID they belong to.)
+            statement.executeUpdate("DROP TABLE IF EXISTS creaturetemplate"); 
+            String sql_creaturetemplates = "CREATE TABLE creaturetemplate (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "max_health INTEGER NOT NULL, " +
+                    "damage INTEGER NOT NULL, " +       
+                    "armor INTEGER NOT NULL, " + 
+                    "location_id INTEGER NOT NULL, " +
+                    "FOREIGN KEY (location_id) REFERENCES location(id)" +
+                    ")";
+                statement.executeUpdate(sql_creaturetemplates);
+            
+            
+
+            /* Table 4: Enemy table */
+            statement.executeUpdate("DROP TABLE IF EXISTS creature");
+            String sql_creatures = "CREATE TABLE creature (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "max_health INTEGER NOT NULL, " +
+                    "current_health INTEGER NOT NULL, " +
+                    "damage INTEGER NOT NULL, " +       
+                    "armor INTEGER NOT NULL " +
+                    ")";
+                    statement.executeUpdate(sql_creatures);
+            
+            /* Table 5: Player Table */
+            statement.executeUpdate("DROP TABLE IF EXISTS player");
+            String sql_player = "CREATE TABLE player (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "max_health INTEGER NOT NULL, " +
+                    "current_health INTEGER NOT NULL, " +
+                    "damage INTEGER NOT NULL, " +       
+                    "armor INTEGER NOT NULL " +
+                    ")";
+                    statement.executeUpdate(sql_player);
+
+
+            /* Table 6: Skill Table
+             * power is the effect it has on a creature's healthbar. (Value for how much HP damaged, or HP healed)
+             * cost is how much mana it takes to use
+             * cooldown is how many turns before the player/creature can cast this again (0 means its ready for casting)
+             * maxcooldown is how long the player/creature must wait after they use the skill before they can cast it again.
+             * duration is how long the skill lasts (0 if an instant skill like heal, attack, or offensive magic)
+             * effect dictates what buff or debuff is inflicted when the skill is used.
+             * NOTE: Effect is currently a placeholder as we decide on how to implement buffs/debuffs (Will take the effect's ID when I make it's table)
+            */
+            statement.executeUpdate("DROP TABLE IF EXISTS skill"); 
+            String sql_skills = "CREATE TABLE skill (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "name TEXT NOT NULL, " +
+                    "power INTEGER NOT NULL, " +
+                    "cost INTEGER NOT NULL, " +
+                    "cooldown INTEGER NOT NULL, " + 
+                    "maxcooldown INTEGER NOT NULL, " +       
+                    "duration INTEGER NOT NULL, " + 
+                    "effect INTEGER NOT NULL " +
+                    ")";
+                statement.executeUpdate(sql_skills);
+            
+            // LOCATIONS:
+
+            // Forest Location
+            statement.executeUpdate("insert into location values(1, 'Forest', 'A dark, wooded forest filled with goblins. . .', '8')");
+            // Desert Location
+            statement.executeUpdate("insert into location values(2, 'Desert', 'Harsh dunes that batter your body with strong winds. . . You can taste the dust. . .', '10')");
+            // Snow Location
+            statement.executeUpdate("insert into location values(3, 'Snowfields', 'A white abyss of nothing but ice and snow. . . The wind bites at your whole body. . .', '10')");
+            // Caves Location
+            statement.executeUpdate("insert into location values(4, 'Caves', 'Crystalline structures glitter in the walls. . . They are very pretty.', '12')");
+            // City Location
+            statement.executeUpdate("insert into location values(5, 'Burning City', 'Homes crumble to the ground as fire erupts from windows and doors. . . What happened here?', '12')");
+            // Mountain Location
+            statement.executeUpdate("insert into location values(6, 'The Forgotten Mountain', 'A dark presence can be felt here, as if something is off. . .', '6')");
+            // Forlorn Citadel
+            statement.executeUpdate("insert into location values(7, 'The Forlorn Citadel', 'Ashes are spread throughout the air as the capital stands charred. . . and broken. . .', '6')");
+            
+            // ------------------------------
+
+            // LOCATION LINKS:
+
             // Forest -> Desert Link
             statement.executeUpdate("insert into locationconnection values(1, 2)");
             // Forest -> Snow Link
@@ -93,24 +162,65 @@ public class GameDatabase {
             statement.executeUpdate("insert into locationconnection values(4, 6)");
             // City -> Citadel
             statement.executeUpdate("insert into locationconnection values(5, 7)");
+            
+            // ------------------------------
+            
+            // CREATURE TEMPLATES:
 
-            // Table 3: Creature Database
-            // Includes the foreign key for locations, so that specific creatures are attributed to their home locations.
-            statement.executeUpdate("DROP TABLE IF EXISTS creature"); 
-            String sql_creatures = "CREATE TABLE creature (" +
-                    "id INTEGER PRIMARY KEY, " +
-                    "name TEXT NOT NULL, " +
-                    "max_health INTEGER NOT NULL, " +
-                    "damage INTEGER NOT NULL, " +       
-                    "armor INTEGER NOT NULL, " + 
-                    "location_id INTEGER NOT NULL, " +
-                    "FOREIGN KEY (location_id) REFERENCES location(id)" +
-                    ")";
-                statement.executeUpdate(sql_creatures);
+            // PLACEHOLDER statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
 
             // Forest monsters (Forest tag: "1")
-            statement.executeUpdate("insert into creature values(1, 'Goblin', '30', '5', '0', 1)");
+            statement.executeUpdate("insert into creature values(1, 'Goblin', '30', '5', '0', '1')"); // High % chance
+            statement.executeUpdate("insert into creature values(2, 'Faeling', '25', '10', '0', '1')"); // High % chance (heal skill?)
+            statement.executeUpdate("insert into creature values(3, 'Wolf', '30', '8', '0', '1')"); // High % chance
+            statement.executeUpdate("insert into creature values(4, 'Bandit', '25', '10', '1', '1')"); // Med % chance
+            statement.executeUpdate("insert into creature values(5, 'Ent', '35', '5', '1', '1')"); // Med % chance
+            statement.executeUpdate("insert into creature values(6, 'Squirrel', '5', '2', '0', '1')"); // Med % chance
+            statement.executeUpdate("insert into creature values(7, 'Evil Druid', '50', '10', '1', '1')"); // Low % chance (Debuff skill?)
+            statement.executeUpdate("insert into creature values(8, 'Rampaging Bear', '50', '15', '-3', '1')"); // Low % chance
+            statement.executeUpdate("insert into creature values(9, 'Big Rock', '25', '0', '5', '1')"); // Low % chance (Damage skill?)
+            statement.executeUpdate("insert into creature values(10, 'The Great Oak', '100', '1', '3', '1')"); // VERY Low % chance (maybe skill?)
+            
+            statement.executeUpdate("insert into creature values(101, 'Eledraiel, The Forest Warlord', '100', '25', '2', '1')"); // BOSS (Spawns on last combat)
+
             // Desert monsters (Desert tag: "2")
+            /*
+            statement.executeUpdate("insert into creature values(11, 'Desert Bandit', '<maxhp>', '<atk>', '<armor>', '<location>')"); // High % chance
+            statement.executeUpdate("insert into creature values(12, 'Sand Elemental', '<maxhp>', '<atk>', '<armor>', '<location>')"); // High % chance
+            statement.executeUpdate("insert into creature values(13, 'Mummy', '<maxhp>', '<atk>', '<armor>', '<location>')"); // High % chance
+            statement.executeUpdate("insert into creature values(14, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Med % chance
+            statement.executeUpdate("insert into creature values(15, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Med % chance
+            statement.executeUpdate("insert into creature values(16, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Med % chance
+            statement.executeUpdate("insert into creature values(17, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Low % chance
+            statement.executeUpdate("insert into creature values(18, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Low % chance
+            statement.executeUpdate("insert into creature values(19, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // Low % chance
+            statement.executeUpdate("insert into creature values(20, 'Rock Golem', '<maxhp>', '<atk>', '<armor>', '<location>')"); // VERY Low % chance
+
+            statement.executeUpdate("insert into creature values(102, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')"); // BOSS (spawns on last combat)
+            */
+            // Snowfield monsters (Snowfield tag: "3")
+            /*
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+
+            statement.executeUpdate("insert into creature values(<id>, '<Creature>', '<maxhp>', '<atk>', '<armor>', '<location>')");
+            */
+            // Cavern monsters (Cave tag: "4")
+            
+            // ------------------------------
+
+
+
+            // SKILLS:
+            statement.executeUpdate("insert into skill values(1, 'attack', '10', '0', '0', '0', '0', '0')");
             
             //display the contents of the Location table
             String sqlLocationQuery = "SELECT * FROM location"; // Return all (*) rows from Location table
@@ -133,6 +243,18 @@ public class GameDatabase {
                     System.out.print(rsCreature.getString("name"));
                     System.out.println(" id: " + rsCreature.getInt("id"));
                 }
+
+                //display the contents of the Skills table
+            String sqlSkillQuery = "SELECT * FROM skill"; // Return all (*) rows from the skill table
+            ResultSet rsSkill = statement.executeQuery(sqlSkillQuery);
+                //loop through all of the results
+                while(rsSkill.next())
+                {
+                    // read the result set
+                    System.out.print(rsSkill.getString("name"));
+                    System.out.println(" id: " + rsSkill.getInt("id"));
+                }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
