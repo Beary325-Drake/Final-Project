@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 public class Player extends Character
 {
 
     private Location currentLocation;
     private int skillPoints;
     private String name;
+    private int level;
     /**
      * Default constructor for the Player class
      */
@@ -78,9 +81,12 @@ public class Player extends Character
         this.setAlive(false);
     }
 
+    /**
+     * unlocks a certain skill
+     */
     public void unlockSkill(Skill skill)
     {
-        if (!getSkillTree().hasSkill(skill))
+        if (getSkillTree().hasSkill(skill))
         {
             SkillNode node = getSkillTree().findNode(skill);
             if (node.canLearn())
@@ -122,5 +128,68 @@ public class Player extends Character
         }
     }
 
-     
+    /**
+     * prints out all skills that can be unlocked, takes and input, and unlocks skill based on input
+     */
+    public void levelUp()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        level += 1;
+        System.out.println(getName() + " has reached level " + level + "!");
+        ArrayList<SkillNode> canUnlock = new ArrayList<SkillNode>();
+        if (canUnlock.size() > 0)
+        {
+            while (true)
+            {
+                System.out.println("Select one of the following skills to unlock:");
+
+                for (Skill skill : getUnlockedSkills())
+                {
+                    if (getSkillTree().hasSkill(skill))
+                    {
+                        SkillNode node = getSkillTree().findNode(skill);
+                        if (node.getUnlocked())
+                        {
+                            for (SkillNode childnode : node.getChildren())
+                            {
+                                if (!childnode.getUnlocked())
+                                {
+                                    canUnlock.add(childnode);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                int counter = 1;
+                for (SkillNode node : canUnlock)
+                {
+                    System.out.println(counter + ".  " + node.getSkill().getName());
+                }
+
+
+                int choice = keyboard.nextInt();
+                keyboard.nextLine();
+                if (choice > 0 && choice <= canUnlock.size())
+                {
+                    Skill chosenSkill = canUnlock.get(choice -1).getSkill();
+                    unlockSkill(chosenSkill);
+                    if (canUnlock.contains(canUnlock.get(choice -1)))
+                    {
+                        System.out.println(chosenSkill.getName() + " is now unlocked!");
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        else
+        {
+            System.out.println("No skills left to unlock!");
+        }
+        
+        keyboard.close();
+
+        }
 }
