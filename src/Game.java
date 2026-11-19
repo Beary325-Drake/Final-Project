@@ -35,6 +35,8 @@ public class Game {
                     System.out.println("Please enter a valid integer. Ex: '1', or '2'");
             }
         }
+        input.close();
+
     }
     /**
      * starts up the game with a new player, currently puts you straight into combat
@@ -43,15 +45,51 @@ public class Game {
         System.out.println("What is the name of your hero: ");
         String characterName = input.next().trim();
         player = new Player(100, 10, 5, 1, characterName);
+        player.setCurrentLocation(createLocations());
         player.setSkillTree(createPlayerSkillTree());
         // the root skill starts unlocked, so add it to the list the player picks from in combat
         player.getUnlockedSkills().add(player.getSkillTree().getRoot().getSkill());
-        for (int i = 0; i < 4; i++)
-        {
-            combat();
-        }
-        input.close();
+        while (true)
+            {
+                player.setMana(player.getMaxMana());
+                for (int i = 0; i < 1; i++)
+                {
+                    combat();
+                }
+                if (player.getCurrentLocation().getLocations().size() == 0)
+                {
+                    System.out.println("You have reached all locations, good job " + player.getName());
+                    break;
+                }    
+                player.progressLocation(input);
+            }
+            
     }
+
+
+
+    /**
+     * creates several test locations to make sure they work
+     * TODO: replace with a function that gets the locations from the database
+     */
+    private static Location createLocations()
+    {
+        Location forest = new Location("Forest", "A forest with weak enemies and trees");
+        Location cave = new Location("Cave", "A cave, filled with rocks and stones");
+        Location mountain = new Location("Mountain", "A frigid mountain peak");
+        
+        Location deepCave = new Location("Deep Cave", "A deep cave, near the bottom of the earth");
+        Location glacier = new Location("Glacier", "A impossibly tall cliff face of ice");
+        
+        cave.addLocation(deepCave);
+        mountain.addLocation(glacier);
+
+        forest.addLocation(cave);
+        forest.addLocation(mountain);
+
+        return forest;
+    }
+
 
     /**
      * created with the help of Claude so i can test skills before the database is finished
@@ -146,7 +184,7 @@ public class Game {
             case "2":
             {
                 System.out.println("You attempt to flee...");
-                System.out.println(" and succeed!!"); 
+                System.out.println(" and succeed!"); 
                 return;
             }
             default:
@@ -166,7 +204,7 @@ public class Game {
     private static void playerTurn(Creature enemy)
     {
         Skill chosenSkill;
-        
+        player.setMana(player.getMana() + 1);
         while (true)
         {
             player.printSkillOptions();
@@ -239,4 +277,7 @@ public class Game {
         System.out.println("1. Continue combat");
         System.out.println("2. Flee");
     }
+
+
+
 }

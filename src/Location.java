@@ -10,6 +10,8 @@ public class Location
     {
         setName(name);
         setDescription(description);
+        spawnList = new ArrayList<Character>();
+        nextLocations = new ArrayList<Location>();
     }
 
     public void addLocation(Location newLocation)

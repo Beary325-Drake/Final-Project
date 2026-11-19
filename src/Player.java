@@ -188,4 +188,41 @@ public class Player extends Character
             System.out.println("No skills left to unlock!");
         }
     }
+
+
+    /**
+     * prints out location choices and accepts input so the player can choos what location to move to next
+     */
+    public void progressLocation(Scanner keyboard)
+    {
+        System.out.println("Choose what location to move to:");
+        if (currentLocation.getLocations().size() > 0)
+        {
+            int counter = 1;
+            for (Location location : currentLocation.getLocations())
+            {
+                System.out.println(counter + ". " + location.getName());
+                counter += 1;
+            }
+        }
+        else
+        {
+            System.out.println("No more locations, you have completed the game!");
+        }
+
+        int choice = keyboard.nextInt();
+        keyboard.nextLine();
+        if (choice > 0 && choice <= currentLocation.getLocations().size())
+        {
+            setCurrentLocation(currentLocation.getLocations().get(choice - 1));
+            System.out.println("You have moved to " + currentLocation.getName() + "!");
+            System.out.println(currentLocation.getDescription());
+        }
+        else
+        {
+            System.out.println("Index out of bounds");
+        }
+
+    }
+
 }
