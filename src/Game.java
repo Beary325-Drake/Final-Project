@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
     
@@ -191,9 +192,20 @@ public class Game {
             }
             case "2":
             {
+                Random rand = new Random();
                 System.out.println("You attempt to flee...");
-                System.out.println(" and succeed!"); 
-                return;
+                if (rand.nextInt(10) > 6)
+                {
+                    enemyList.removeAll(enemyList);
+                    System.out.println("And succeed!"); 
+                }
+                else
+                {
+                    System.out.println("And fail!");
+                    enemyTurn();
+                    break;
+                }
+                break;
             }
             default:
             {
