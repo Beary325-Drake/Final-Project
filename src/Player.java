@@ -123,7 +123,7 @@ public class Player extends Character
         int count = 1;
         for (Skill skill : getUnlockedSkills())
         {
-            System.out.println(count + ".   " + skill.getName());;
+            System.out.println(count + ".   " + skill.getName() + "     Cost: " + skill.getCost() + "   Cooldown: " + skill.getCooldown());;
             count += 1;
         }
     }

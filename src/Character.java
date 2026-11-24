@@ -37,6 +37,9 @@ public abstract class Character
     private boolean isDefending;
     private String name;
     private SkillTree skillTree;
+
+    private ArrayList<Effect> effects = new ArrayList<Effect>();
+
     /**
      * a list of all unlocked skills, so i dont have to make the tree an iterable object, could probably just use this for enemies, rather than dealing with trees
      */
@@ -56,6 +59,31 @@ public abstract class Character
     public int attack()
     {
         return this.getDamage();
+    }
+
+    public void addEffect(Effect effect)
+    {
+        this.effects.add(effect);
+        effect.applyEffect(this);
+    }
+
+    /**
+     * loops through all effects on this character, applies the ones that occur every tick, and removes any effects that have run out of time
+     */
+    public void effectTick()
+    {
+        ArrayList<Effect> remove = new ArrayList<Effect>();
+        for (Effect effect : effects)
+        {
+            effect.effectTick(this);
+            if (effect.getTime() <= 0)
+            {
+                effect.removeEffect(this);
+                remove.add(effect);
+            }
+            effect.setTime(effect.getTime() - 1);
+        }
+        effects.removeAll(remove);
     }
 
     public void useSkill(Skill skill, Character target)
@@ -205,15 +233,21 @@ public abstract class Character
 
     // Turn related functions & Actions:
     
-    public void turn_start()
     /**
      * TODO: add some form of counter so temporary strength buffs wear off after a few turns, as well as keep track of cooldowns
     * This function serves to check the character's status at the start of their turn.
     * For now, it will add 1 mana to the character, given that the addition does not make this character exceed their max mana.
     * it will also check if the character is defending, and if so, it will remove defending status.
     */
-
+    public void turnStart()
     {
+        effectTick();
+
+        for (Skill skill : unlockedSkills)
+        {
+            skill.setCooldown(skill.getCooldown() - 1);
+        }
+
         if (this.isDefending()) { // Simple check to see if the character is defending. If so, removes defending status.
             this.setDefending(false);
         }

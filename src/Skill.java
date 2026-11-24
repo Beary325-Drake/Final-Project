@@ -91,7 +91,7 @@ public class Skill
 
     public void setCooldown(int cool)
     {
-        this.cooldown = cool;
+        this.cooldown = Math.clamp(cool, 0, maxCooldown);
     }
 
     public int getCooldown()
@@ -134,6 +134,7 @@ public class Skill
      */
     public void useSkill(Character user, Character target)
     {
+        
         switch (type)
         {
             case SkillType.ATTACK:
@@ -152,14 +153,14 @@ public class Skill
 
             case SkillType.MAXHEALTH:
             {
-                user.setMaxHealth(user.getMaxHealth() + power);
-                System.out.println(user.getName() + " gains " + power + " more maximum health!");
+                user.addEffect(new Effect(duration, power, type));
+                System.out.println(user.getName() + " gains " + power + "  maximum health for " + duration + " turns!");
                 break;
             }
 
             case SkillType.STRENGTH:
             {
-                user.setDamage(user.getDamage() + power);
+                user.addEffect(new Effect(duration, power, type));
                 System.out.println(user.getName() + " is empowered with " + power + " extra damage for " + duration + " turns!");
                 break;
             }

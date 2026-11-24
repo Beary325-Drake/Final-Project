@@ -89,9 +89,12 @@ public class Game {
         
         Location deepCave = new Location("Deep Cave", "A deep cave, near the bottom of the earth");
         Location glacier = new Location("Glacier", "A impossibly tall cliff face of ice");
+        Location testPlace = new Location("Secret Place", "Oooooh a secret");
         
         cave.addLocation(deepCave);
+        deepCave.addLocation(testPlace);
         mountain.addLocation(glacier);
+        glacier.addLocation(testPlace);
 
         forest.addLocation(cave);
         forest.addLocation(mountain);
@@ -117,11 +120,11 @@ public class Game {
     private static SkillTree createPlayerSkillTree()
     {
         // Skill(name, type, cost, power, maxCooldown, duration)
-        Skill basicAttack = new Skill("Basic Attack", Skill.SkillType.ATTACK,    0, player.getDamage(), 0, 0);
+        Skill basicAttack = new Skill("Basic Attack", Skill.SkillType.ATTACK,    0, player.getDamage(), 1, 0);
         Skill heavyStrike = new Skill("Heavy Strike", Skill.SkillType.ATTACK,    2, 20, 2, 0);
         Skill whirlwind   = new Skill("Whirlwind",    Skill.SkillType.ATTACK,    4, 35, 3, 0);
         Skill heal        = new Skill("Heal",         Skill.SkillType.HEAL,      2, 20, 2, 0);
-        Skill fortify     = new Skill("Fortify",      Skill.SkillType.MAXHEALTH, 3, 15, 4, 0);
+        Skill fortify     = new Skill("Fortify",      Skill.SkillType.MAXHEALTH, 3, 15, 4, 3);
         Skill battleCry   = new Skill("Battle Cry",   Skill.SkillType.STRENGTH,  2, 5,  3, 2);
 
         SkillNode root = new SkillNode(basicAttack);
@@ -224,7 +227,7 @@ public class Game {
     private static void playerTurn(Creature enemy)
     {
         Skill chosenSkill;
-        player.setMana(player.getMana() + 1);
+        player.turnStart();
         while (true)
         {
             player.printSkillOptions();
@@ -233,7 +236,14 @@ public class Game {
             if (0 < choice && choice <= player.getUnlockedSkills().size())
             {
                 chosenSkill = player.getUnlockedSkills().get(choice - 1);
-                break;
+                if (chosenSkill.getCooldown() == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    System.out.println("Chosen skill is on cooldown");
+                }
             }
             else
             {
@@ -256,6 +266,7 @@ public class Game {
     {
         for (Creature enemy : enemyList)
         {
+            enemy.turnStart();
             enemy.useSkill(player);
         }
     }
